@@ -202,3 +202,209 @@
                     <div class="flex justify-between items-end mb-6 border-b border-rose-100 pb-4">
                         <h2 class="text-lg font-extrabold flex items-center gap-2 text-slate-800">
                             <i data-lucide="check-circle" class="w-6 h-6 text-rose-500"></i>
+                            Checklist da Loja
+                        </h2>
+                        <span id="progress-text" class="text-2xl font-black text-rose-500">0%</span>
+                    </div>
+                    
+                    <div class="w-full bg-rose-100 rounded-full h-2.5 mb-6 overflow-hidden relative">
+                        <div id="progress-bar" class="bg-gradient-to-r from-rose-500 to-pink-500 h-2.5 rounded-full transition-all duration-700 ease-out relative w-0">
+                            <div class="absolute top-0 left-0 right-0 bottom-0 bg-white/20 animate-pulse"></div>
+                        </div>
+                    </div>
+
+                    <!-- Lista renderizada diretamente no HTML para o Tailwind reconhecer as classes -->
+                    <ul id="task-list" class="space-y-3">
+                        
+                        <!-- Task 1 -->
+                        <li id="task-1" onclick="toggleTask(1)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100">Leandro</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Gravar vídeo focado em 3 SUVs/Sedans do stock (1 min)</p>
+                            </div>
+                        </li>
+
+                        <!-- Task 2 -->
+                        <li id="task-2" onclick="toggleTask(2)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-orange-50 text-orange-600 border border-orange-100">Mateus</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Abrir "Caixa de Perguntas" nos Stories do Instagram</p>
+                            </div>
+                        </li>
+
+                        <!-- Task 3 -->
+                        <li id="task-3" onclick="toggleTask(3)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-orange-50 text-orange-600 border border-orange-100">Mateus/G30</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Ativar campanha de Tráfego Pago</p>
+                            </div>
+                        </li>
+
+                        <!-- Task 4 -->
+                        <li id="task-4" onclick="toggleTask(4)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-orange-50 text-orange-600 border border-orange-100">Mateus</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Registar TODOS os contactos recebidos no CRM Boom</p>
+                            </div>
+                        </li>
+
+                        <!-- Task 5 -->
+                        <li id="task-5" onclick="toggleTask(5)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100">Leandro</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Enviar "vídeo bolinha" no WhatsApp para clientes antigos</p>
+                            </div>
+                        </li>
+
+                        <!-- Task 6 -->
+                        <li id="task-6" onclick="toggleTask(6)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-orange-50 text-orange-600 border border-orange-100">Mateus</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Agendar disparos de WhatsApp para chamar a base de leads para a loja</p>
+                            </div>
+                        </li>
+
+                        <!-- Task 7 -->
+                        <li id="task-7" onclick="toggleTask(7)" class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm">
+                            <div class="mt-0.5 shrink-0 transition-transform hover:scale-110">
+                                <i data-lucide="circle" class="icon-undone w-6 h-6 text-rose-200 hover:text-rose-400"></i>
+                                <i data-lucide="check-circle" class="icon-done hidden w-6 h-6 text-rose-500 drop-shadow-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100">Leandro & Mateus</span>
+                                <p class="task-text text-sm mt-1.5 font-medium text-slate-700">Definir e preparar o modelo de ação para a Loja Física (ver ideias acima)</p>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- Copy (Sugestão de Texto) -->
+                <div class="bg-gradient-to-br from-rose-900 to-slate-900 p-7 rounded-3xl shadow-lg text-white border border-rose-800 relative overflow-hidden">
+                    <i data-lucide="heart" class="absolute -bottom-6 -right-6 w-32 h-32 text-rose-800/30 fill-current rotate-12"></i>
+                    
+                    <h2 class="text-lg font-extrabold flex items-center gap-2 mb-5 text-rose-100 relative z-10">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-300"></i>
+                        Legenda do Anúncio
+                    </h2>
+                    <div class="bg-black/20 backdrop-blur-sm p-5 rounded-2xl border border-white/10 relative z-10">
+                        <p class="text-sm text-rose-50 font-medium leading-relaxed whitespace-pre-wrap">O presente que ela nunca vai esquecer está na Araucária Veículos! 🌹🚗
+
+Mãe merece segurança, conforto e a liberdade de ir para onde quiser. Neste Dia das Mães, preparamos uma seleção exclusiva de veículos revisados.
+
+🎁 <span class="text-amber-300 font-bold">Bônus Especial:</span> Fechando o negócio até o dia 10/05, você ganha a transferência grátis ou tanque cheio! Além disso, toda mãe que nos visitar ganha um Mimo Especial.
+
+📍 Visite-nos em Mundo Novo - MS ou clique no link da bio para atendimento VIP.</p>
+                    </div>
+                    <button 
+                        id="copy-btn"
+                        onclick="copyText()"
+                        class="mt-5 w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-400 hover:to-pink-400 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 relative z-10"
+                    >
+                        <span>Copiar Legenda Pronta</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Funcionalidades -->
+    <script>
+        // Inicializa os ícones imediatamente após o carregamento da página
+        lucide.createIcons();
+
+        // Estado inicial das tarefas
+        let tasksState = {
+            1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false
+        };
+
+        // Função para alternar o estado de uma tarefa (apenas manipula as classes do HTML existente)
+        function toggleTask(id) {
+            tasksState[id] = !tasksState[id];
+            const isDone = tasksState[id];
+            
+            const li = document.getElementById(`task-${id}`);
+            const iconUndone = li.querySelector('.icon-undone');
+            const iconDone = li.querySelector('.icon-done');
+            const textElement = li.querySelector('.task-text');
+
+            if (isDone) {
+                // Aplica estilo de concluído
+                li.className = 'flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-rose-50/50 border-rose-100 opacity-70';
+                iconUndone.classList.add('hidden');
+                iconDone.classList.remove('hidden');
+                textElement.className = 'task-text text-sm mt-1.5 font-medium text-slate-400 line-through';
+            } else {
+                // Aplica estilo de pendente
+                li.className = 'flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 border bg-white border-transparent hover:border-rose-200 hover:shadow-sm';
+                iconUndone.classList.remove('hidden');
+                iconDone.classList.add('hidden');
+                textElement.className = 'task-text text-sm mt-1.5 font-medium text-slate-700';
+            }
+
+            updateProgress();
+        }
+
+        // Atualiza a barra e o texto de progresso
+        function updateProgress() {
+            const totalTasks = Object.keys(tasksState).length;
+            const completedCount = Object.values(tasksState).filter(done => done).length;
+            const progress = Math.round((completedCount / totalTasks) * 100);
+            
+            document.getElementById('progress-text').innerText = `${progress}%`;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+
+        // Copiar texto para a área de transferência
+        function copyText() {
+            const textToCopy = "O presente que ela nunca vai esquecer está na Araucária Veículos! 🌹🚗\n\nMãe merece segurança, conforto e a liberdade de ir para onde quiser. Neste Dia das Mães, preparamos uma seleção exclusiva de veículos revisados.\n\n🎁 Bônus Especial: Fechando o negócio até o dia 10/05, você ganha a transferência grátis ou tanque cheio! Além disso, toda mãe que nos visitar ganha um Mimo Especial.\n\n📍 Visite-nos em Mundo Novo - MS ou clique no link da bio para atendimento VIP.";
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            textArea.style.position = "absolute";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('copy-btn');
+                btn.innerHTML = "<span>Copiado com sucesso! ✓</span>";
+                
+                setTimeout(() => {
+                    btn.innerHTML = "<span>Copiar Legenda Pronta</span>";
+                }, 2000);
+            } catch (err) {
+                console.error('Falha ao copiar', err);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
