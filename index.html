@@ -14,7 +14,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         
-        /* Animações personalizadas para substituir o plugin tailwindcss-animate */
+        /* Animações */
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -26,7 +26,7 @@
         .animate-slide-down { animation: slideDown 0.3s ease-out forwards; }
         .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
         
-        /* Utilitário para ocultar scrollbars */
+        /* Ocultar scrollbars */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -36,7 +36,7 @@
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto"></div>
 
     <script>
-        // Dados do Plano de Ação
+        // --- 1. DADOS DO PLANO DE AÇÃO ---
         let expandedId = 1;
         let plans = [
             {
@@ -116,7 +116,7 @@
             }
         ];
 
-        // Configuração de Status
+        // --- 2. LÓGICA E FUNÇÕES GLOBAIS ---
         function getStatusConfig(status) {
             switch (status) {
                 case 'completed': return { icon: 'check-circle-2', text: 'Concluído', color: 'text-[#cfa861]', bg: 'bg-[#cfa861]/10', border: 'border-[#cfa861]/30' };
@@ -125,14 +125,12 @@
             }
         }
 
-        // Ações Globais
         window.toggleExpand = function(id) {
             expandedId = expandedId === id ? null : id;
             render();
         };
 
-        window.updateStatus = function(event, id, newStatus) {
-            event.stopPropagation();
+        window.updateStatus = function(id, newStatus) {
             plans = plans.map(p => {
                 if (p.id === id) {
                     let progress = p.progress;
@@ -146,20 +144,20 @@
             render();
         };
 
-        // Renderização Principal
+        // --- 3. RENDERIZAÇÃO DA TELA (Refatorada para maior segurança) ---
         function render() {
+            const appDiv = document.getElementById('app');
+            if (!appDiv) return;
+
             const totalCompleted = plans.filter(p => p.status === 'completed').length;
             const totalInProgress = plans.filter(p => p.status === 'in-progress').length;
             const totalPending = plans.filter(p => p.status === 'pending').length;
-            const overallProgress = Math.round(plans.reduce((acc, curr) => acc + curr.progress, 0) / plans.length);
+            const overallProgress = Math.round(plans.reduce((acc, curr) => acc + curr.progress, 0) / plans.length) || 0;
 
-            const appDiv = document.getElementById('app');
-            
+            // Header Principal e KPIs
             let html = `
-                <!-- Header Visual Lions -->
                 <header class="mb-8 bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden border border-[#cfa861]/20">
                     <div class="absolute top-0 right-0 w-96 h-96 bg-[#cfa861] rounded-full opacity-10 -mr-20 -mt-20 blur-[100px]"></div>
-                    
                     <div class="relative z-10">
                         <div class="flex items-center gap-3 mb-2">
                             <i data-lucide="crown" class="h-6 w-6 text-[#cfa861]"></i>
@@ -172,7 +170,6 @@
                     </div>
                 </header>
 
-                <!-- KPI Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-[#141414] rounded-xl shadow-lg border border-[#cfa861]/20 p-5 flex flex-col justify-between hover:border-[#cfa861]/50 transition-colors">
                         <div class="flex justify-between items-start mb-2">
@@ -215,10 +212,7 @@
                     </div>
                 </div>
 
-                <!-- Lista de Planos -->
                 <div class="space-y-6">
-                    
-                    <!-- Banner de Prioridade -->
                     <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 bg-red-950/30 border border-red-900/50 border-l-4 border-l-red-600 rounded-r-xl p-5 shadow-lg">
                         <div class="bg-red-950/50 p-3 rounded-full text-red-500 border border-red-900">
                             <i data-lucide="alert-triangle" class="h-8 w-8"></i>
@@ -232,14 +226,14 @@
                     </div>
             `;
 
+            // Construção das Caixas de Planos
             plans.forEach(plan => {
                 const isExpanded = expandedId === plan.id;
                 const statusConfig = getStatusConfig(plan.status);
 
+                // --- Topo do Card ---
                 html += `
                     <div class="bg-[#141414] rounded-xl shadow-lg border ${isExpanded ? 'border-[#cfa861]/50 ring-1 ring-[#cfa861]/20' : 'border-zinc-800'} overflow-hidden transition-all duration-300">
-                        
-                        <!-- Card Header (Clickable) -->
                         <div onclick="toggleExpand(${plan.id})" class="p-5 md:p-6 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-[#1a1a1a] transition-colors ${isExpanded ? 'bg-gradient-to-r from-[#1a1a1a] to-[#141414]' : ''}">
                             <div class="flex items-start gap-4">
                                 <div class="p-3 rounded-lg bg-[#cfa861]/10 text-[#cfa861] border border-[#cfa861]/20">
@@ -249,4 +243,218 @@
                                     <div class="flex items-center gap-3 flex-wrap mb-1.5">
                                         <h3 class="font-black text-lg text-white leading-tight uppercase tracking-wide">PLANO ${plan.id}: ${plan.title}</h3>
                                         <span class="text-[10px] px-2.5 py-1 rounded border border-zinc-700 bg-zinc-900 text-zinc-300 uppercase tracking-widest font-bold">
-                                            ${plan
+                                            ${plan.type}
+                                        </span>
+                                    </div>
+                                    <p class="text-zinc-400 text-sm font-medium line-clamp-1 w-full max-w-2xl">${plan.what}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 ml-14 md:ml-0">
+                                <div class="flex items-center gap-2 px-4 py-1.5 rounded text-xs font-bold uppercase tracking-widest border ${statusConfig.bg} ${statusConfig.color} ${statusConfig.border}">
+                                    <i data-lucide="${statusConfig.icon}" class="h-4 w-4"></i>
+                                    ${statusConfig.text}
+                                </div>
+                                <i data-lucide="${isExpanded ? 'chevron-up' : 'chevron-down'}" class="h-5 w-5 ${isExpanded ? 'text-[#cfa861]' : 'text-zinc-600'}"></i>
+                            </div>
+                        </div>
+                `;
+
+                // --- Conteúdo Expandido ---
+                if (isExpanded) {
+                    html += `
+                        <div class="p-6 border-t border-zinc-800/50 animate-slide-down">
+                            <!-- Botões de Status -->
+                            <div class="flex flex-wrap items-center gap-3 mb-8 p-4 bg-[#0d0d0d] rounded-lg border border-zinc-800">
+                                <span class="text-xs font-bold text-zinc-400 mr-2 uppercase tracking-widest">Status da Ação:</span>
+                                <button onclick="event.stopPropagation(); updateStatus(${plan.id}, 'pending')" class="px-4 py-2 rounded text-xs font-bold uppercase tracking-wider transition-all border ${plan.status === 'pending' ? 'bg-zinc-800 text-white border-zinc-600' : 'bg-transparent text-zinc-500 border-zinc-800 hover:bg-zinc-800/50'}">
+                                    Pendente
+                                </button>
+                                <button onclick="event.stopPropagation(); updateStatus(${plan.id}, 'in-progress')" class="px-4 py-2 rounded text-xs font-bold uppercase tracking-wider transition-all border ${plan.status === 'in-progress' ? 'bg-amber-500/20 text-amber-400 border-amber-500/50' : 'bg-transparent text-zinc-500 border-zinc-800 hover:bg-zinc-800/50'}">
+                                    Em Andamento
+                                </button>
+                                <button onclick="event.stopPropagation(); updateStatus(${plan.id}, 'completed')" class="px-4 py-2 rounded text-xs font-bold uppercase tracking-wider transition-all border ${plan.status === 'completed' ? 'bg-[#cfa861]/20 text-[#cfa861] border-[#cfa861]/50' : 'bg-transparent text-zinc-500 border-zinc-800 hover:bg-zinc-800/50'}">
+                                    Concluído
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <!-- Coluna Esquerda: O Que, Por Que, Como -->
+                                <div class="lg:col-span-2 space-y-6">
+                                    <div>
+                                        <h4 class="font-black text-[#cfa861] flex items-center gap-2 mb-4 uppercase tracking-widest text-xs">
+                                            <i data-lucide="target" class="h-4 w-4"></i> Objetivo e Descrição
+                                        </h4>
+                                        <div class="space-y-4 bg-[#0d0d0d] border border-zinc-800 p-5 rounded-lg shadow-inner">
+                                            <p class="text-zinc-300 leading-relaxed text-sm">
+                                                <span class="font-bold text-white block mb-1 uppercase text-xs tracking-wider">O que será feito:</span>
+                                                ${plan.what}
+                                            </p>
+                                            <div class="w-full h-px bg-zinc-800"></div>
+                                            <p class="text-zinc-300 leading-relaxed text-sm">
+                                                <span class="font-bold text-white block mb-1 uppercase text-xs tracking-wider">Por que é importante:</span>
+                                                ${plan.why}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gradient-to-r from-[#1a1a1a] to-[#141414] rounded-lg p-5 border border-[#cfa861]/20 shadow-md relative overflow-hidden">
+                                        <div class="absolute top-0 left-0 w-1 h-full bg-[#cfa861]"></div>
+                                        <h4 class="font-black text-white flex items-center gap-2 mb-3 uppercase tracking-widest text-xs">
+                                            <i data-lucide="settings" class="h-4 w-4 text-[#cfa861]"></i> Plano de Execução
+                                        </h4>
+                                        <p class="text-zinc-300 leading-relaxed whitespace-pre-line font-medium text-sm pl-2">${plan.how}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Coluna Direita: Passos e Materiais -->
+                                <div class="space-y-6">
+                                    <div class="bg-[#0d0d0d] p-6 rounded-lg border border-zinc-800 shadow-md relative">
+                                        <h4 class="text-xs font-black text-[#cfa861] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                            <i data-lucide="list-checks" class="h-4 w-4"></i> Missão Prática
+                                        </h4>
+                                        <div class="space-y-6">
+                    `;
+
+                    // Loop para os Passos (Steps)
+                    plan.steps.forEach((step, idx) => {
+                        const isLast = idx === plan.steps.length - 1;
+                        html += `
+                            <div class="relative pl-6">
+                                <div class="absolute left-0 top-1 h-2 w-2 rounded-full bg-[#cfa861] shadow-[0_0_8px_rgba(207,168,97,0.8)] z-10"></div>
+                                ${!isLast ? `<div class="absolute left-[3px] top-3 h-[calc(100%+16px)] w-[2px] bg-zinc-800 z-0"></div>` : ''}
+                                <h5 class="text-sm font-bold text-white mb-1.5 leading-tight">${step.name}</h5>
+                                <p class="text-xs text-zinc-400 leading-relaxed">${step.desc}</p>
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                                        </div>
+                                    </div>
+                    `;
+
+                    // Loop para os Materiais (se houver)
+                    if (plan.materials && plan.materials.length > 0) {
+                        html += `
+                                    <div class="bg-[#cfa861]/5 p-5 rounded-lg border border-[#cfa861]/30 shadow-md">
+                                        <h4 class="text-xs font-black text-[#cfa861] uppercase tracking-widest mb-4 flex items-center gap-2">
+                                            <i data-lucide="book-open" class="h-4 w-4"></i> Entregáveis Lions
+                                        </h4>
+                                        <div class="space-y-3">
+                        `;
+                        plan.materials.forEach(mat => {
+                            html += `
+                                            <a href="${mat.link}" target="_blank" rel="noopener noreferrer" class="flex items-start gap-3 p-3.5 rounded bg-[#141414] border border-zinc-800 hover:border-[#cfa861] hover:bg-[#1a1a1a] transition-all group">
+                                                <i data-lucide="external-link" class="h-4 w-4 text-zinc-500 group-hover:text-[#cfa861] shrink-0 mt-0.5 transition-colors"></i>
+                                                <span class="text-xs text-zinc-300 group-hover:text-white font-bold leading-snug uppercase tracking-wide">${mat.title}</span>
+                                            </a>
+                            `;
+                        });
+                        html += `
+                                        </div>
+                                    </div>
+                        `;
+                    }
+
+                    html += `
+                                </div>
+                            </div>
+                    `;
+
+                    // Regras e Cronograma (Exclusivo Plano 3)
+                    if (plan.schedule || plan.videoRules) {
+                        html += `
+                            <div class="mt-8 pt-8 border-t border-zinc-800/80 animate-fade-in">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                        `;
+
+                        // Cronograma
+                        if (plan.schedule) {
+                            html += `
+                                    <div class="bg-[#0d0d0d] p-6 rounded-lg border border-zinc-800 shadow-md">
+                                        <h4 class="text-xs font-black text-[#cfa861] uppercase tracking-widest mb-1 flex items-center gap-2">
+                                            <i data-lucide="calendar-days" class="h-4 w-4"></i> Planejamento de Conteúdos G30
+                                        </h4>
+                                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-6">${plan.scheduleTitle || ''}</p>
+                                        <div class="space-y-2.5">
+                            `;
+                            plan.schedule.forEach(item => {
+                                html += `
+                                            <div class="flex items-center justify-between bg-[#141414] p-3.5 rounded border border-zinc-800/50 hover:border-[#cfa861]/30 transition-colors group">
+                                                <span class="font-black text-[#cfa861] w-24 uppercase text-xs tracking-wider">${item.day}</span>
+                                                <span class="text-zinc-300 text-xs font-bold flex-1 px-4 tracking-wide group-hover:text-white transition-colors">${item.content}</span>
+                                                ${item.qty ? `<span class="bg-zinc-800 text-white px-2.5 py-1 rounded text-[10px] font-black tracking-wider border border-zinc-700">${item.qty}</span>` : ''}
+                                            </div>
+                                `;
+                            });
+                            html += `
+                                        </div>
+                                    </div>
+                            `;
+                        }
+
+                        // Regras de Vídeos
+                        if (plan.videoRules) {
+                            html += `
+                                    <div class="bg-[#0d0d0d] p-6 rounded-lg border border-zinc-800 shadow-md">
+                                        <h4 class="text-xs font-black text-[#cfa861] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                            <i data-lucide="video" class="h-4 w-4"></i> Novos Tipos de Vídeos (Reels)
+                                        </h4>
+                                        <div class="space-y-3">
+                            `;
+                            plan.videoRules.forEach(rule => {
+                                const bgClass = rule.gold ? 'bg-[#cfa861]/10 border-[#cfa861]/50 shadow-[0_0_15px_rgba(207,168,97,0.1)]' : 'bg-[#141414] border-zinc-800/50 hover:border-zinc-700';
+                                const dotClass = rule.gold ? 'bg-[#cfa861] shadow-[0_0_8px_rgba(207,168,97,0.8)]' : (rule.highlight ? 'bg-zinc-300' : 'bg-zinc-600');
+                                const textClass = rule.gold ? 'text-[#cfa861] text-sm' : (rule.highlight ? 'text-white' : 'text-zinc-400');
+                                
+                                html += `
+                                            <div class="flex items-center gap-4 p-4 rounded-lg border ${bgClass}">
+                                                <div class="h-2 w-2 rounded-full shrink-0 ${dotClass}"></div>
+                                                <span class="text-xs font-black uppercase tracking-wider ${textClass}">${rule.text}</span>
+                                            </div>
+                                `;
+                            });
+                            html += `
+                                        </div>
+                                    </div>
+                            `;
+                        }
+
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    html += `
+                        </div>
+                    `;
+                }
+
+                html += `
+                    </div>
+                `;
+            });
+
+            html += `</div>`; // Fim da Lista
+
+            // Injeta o HTML na tela
+            appDiv.innerHTML = html;
+            
+            // Inicia os ícones com proteção contra falha de rede
+            try {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            } catch (error) {
+                console.error("Falha ao carregar os ícones:", error);
+            }
+        }
+
+        // Aguarda a tela estar pronta para desenhar
+        document.addEventListener("DOMContentLoaded", () => {
+            render();
+        });
+
+    </script>
+</body>
+</html>
